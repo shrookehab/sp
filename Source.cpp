@@ -30,6 +30,7 @@ struct ExpenseInfo
 };
 struct RecurringInfo
 {
+	string RName[num];
 	int Date[num];
 	double Value[num];
 };
@@ -42,8 +43,8 @@ struct All
 void MainMenu();
 double AddSource(SourceInfo Soln[], int);
 double AddExpense(ExpenseInfo ExIn[], int);
-double AddRecurring(int&, int&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&);
-void ListRecurring(int&, int&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&);
+double AddRecurring(int&, int&, int&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&);
+void ListRecurring(int&, int&, int&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&);
 void ListSource(SourceInfo SoIn[], int);
 void ListExpense(ExpenseInfo ExIn[], int);
 void EditSource(SourceInfo Soln[], int);
@@ -51,8 +52,8 @@ void EditExpense(ExpenseInfo ExIn[], int);
 void DeleteSource(SourceInfo SoIn[], int&);
 void DeleteExpens(ExpenseInfo ExIn[], int&);
 
-void EditRec(int&, int&, RecurringInfo&, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo&);
-double GenerateReport(SourceInfo, ExpenseInfo, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, int&, int&, int&, int&, int&, int&, int&, int&, double&);
+//void EditRec(int&, int&, int&, RecurringInfo&, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo&, RecurringInfo&);
+double GenerateReport(SourceInfo Soln[], ExpenseInfo ExIn[], RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, int&, int&, int&, int&, int&, int&, int&, int&, double&);
 
 void DisQuick(double, double, double);
 void DisDetalied(SourceInfo SoIn[], ExpenseInfo ExIn[], int, double, double, double, int, int, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo);
@@ -105,8 +106,9 @@ void MainMenu()
 	double UserSources = 0;
 	double TotalExpenses = 0;
 	double TotalRecurring = 0;
-	RecurringInfo Food = { 0 }, HomeRent = { 0 }, CarFuel = { 0 }, ElecBill = { 0 }, WaterBill = { 0 }, GasBill = { 0 }, Wi_Fi = { 0 }, MobileBill = { 0 };
-	int FoodCounter = 0, FuelCounter = 0;
+	RecurringInfo Food = { 0 }, HomeRent = { 0 }, CarFuel = { 0 }, ElecBill = { 0 }, WaterBill = { 0 }, GasBill = { 0 }, Wi_Fi = { 0 }, MobileBill = { 0 }, Other = { 0 };
+	int FoodCounter = 0, FuelCounter = 0, OtherCounter;
+
 
 	//to read the saved data from a text file 
 	ReadData(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
@@ -188,10 +190,10 @@ void MainMenu()
 			break;
 		case 3:
 			system("cls");
-			TotalRecurring += AddRecurring(FoodCounter, FuelCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
+			TotalRecurring += AddRecurring(FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Other);
 			break;
 		case 4:
-			ListRecurring(FoodCounter, FuelCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
+			ListRecurring(FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Other);
 			break;
 		case 5:
 			system("cls");
@@ -216,7 +218,7 @@ void MainMenu()
 			case 3:
 				system("cls");
 
-				EditRec(FoodCounter, FuelCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
+				//EditRec(FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Other);		
 				break;
 			}
 			}
@@ -331,7 +333,7 @@ void MainMenu()
 
 			cout << endl << endl;
 
-			int Current = 0;
+			double Current = 0;
 
 			cout << "START = " << Current << endl << endl;
 
@@ -510,19 +512,19 @@ double AddExpense(ExpenseInfo ExIn[], int NumExpense)
 	return TotalExpense;
 }
 //AddRecurring function
-double AddRecurring(int& FoodCounter, int& FuelCounter, RecurringInfo& Food, RecurringInfo& HomeRent, RecurringInfo & CarFuel, RecurringInfo& ElecBill, RecurringInfo & WaterBill, RecurringInfo &GasBill, RecurringInfo& Wi_Fi, RecurringInfo &MobileBill)
+double AddRecurring(int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringInfo& Food, RecurringInfo& HomeRent, RecurringInfo & CarFuel, RecurringInfo& ElecBill, RecurringInfo & WaterBill, RecurringInfo &GasBill, RecurringInfo& Wi_Fi, RecurringInfo &MobileBill, RecurringInfo &Other)
 {
 	int n;
 	string ans = "yes";
 
 	string answer;
-	double TotalFood = 0, TotalFuel = 0, TotalRecurring = 0;
+	double TotalFood = 0, TotalFuel = 0, TotalOther = 0, TotalRecurring = 0;
 
 	while (true)
 	{
 		system("cls");
 
-		cout << "_1_Food\n_2_Car Fuel\n_3_Electricity Bill\n_4_Water Bill\n_5_Gas Bill\n_6_Wi_Fi <3 \n_7_Mobile Bill\n_8_Home Rent \n";
+		cout << "_1_Food\n_2_Car Fuel\n_3_Electricity Bill\n_4_Water Bill\n_5_Gas Bill\n_6_Wi_Fi <3 \n_7_Mobile Bill\n_8_Home Rent \n_9_OTHERS....\n";
 		cin >> n;
 		switch (n)
 		{
@@ -548,62 +550,79 @@ double AddRecurring(int& FoodCounter, int& FuelCounter, RecurringInfo& Food, Rec
 				cin >> CarFuel.Date[FuelCounter];
 				cout << "value " << FuelCounter + 1 << " : " << endl;
 				cin >> CarFuel.Value[FuelCounter];
-				TotalFood += CarFuel.Value[FuelCounter];
+				TotalFuel += CarFuel.Value[FuelCounter];
 				cout << "Do you want to add more Car Fuel costs ? \"yes\" OR \"no\" \n";
 				cin >> answer;
 				FuelCounter++;
 			} while (answer == "yes" || answer == "Yes");
 			break;
 		case 3:
-			cout << "<<< Electricity Bill >>> ";
-			cout << "The Date: ";
+			cout << "<<< Electricity Bill >>>\n ";
+			cout << "The Date : ";
 			cin >> ElecBill.Date[0];
 			cout << " value : ";
 			cin >> ElecBill.Value[0];
 			TotalRecurring += ElecBill.Value[0];
 			break;
 		case 4:
-			cout << "<<< Water Bill >>>  ";
-			cout << "The Date: ";
+			cout << "<<< Water Bill >>> \n ";
+			cout << "The Date : ";
 			cin >> WaterBill.Date[0];
 			cout << " value : ";
 			cin >> WaterBill.Value[0];
 			TotalRecurring += WaterBill.Value[0];
 			break;
 		case 5:
-			cout << "<<< Gas Bill >>>  ";
-			cout << "The Date: ";
+			cout << "<<< Gas Bill >>> \n ";
+			cout << "The Date : ";
 			cin >> GasBill.Date[0];
 			cout << " value : ";
 			cin >> GasBill.Value[0];
 			TotalRecurring += GasBill.Date[0];
 			break;
 		case 6:
-			cout << "<<< Wi_Fi Bill >>>  ";
-			cout << "The Date: ";
+			cout << "<<< Wi_Fi Bill >>>\n  ";
+			cout << "The Date : ";
 			cin >> Wi_Fi.Date[0];
 			cout << "value : ";
 			cin >> Wi_Fi.Value[0];
 			TotalRecurring += Wi_Fi.Value[0];
 			break;
 		case 7:
-			cout << "<<< Mobile Phone Bill >>>  ";
-			cout << "The Date: ";
+			cout << "<<< Mobile Phone Bill >>>\n ";
+			cout << "The Date : ";
 			cin >> MobileBill.Date[0];
 			cout << "value : ";
 			cin >> MobileBill.Value[0];
 			TotalRecurring += MobileBill.Value[0];
 			break;
 		case 8:
-			cout << "<<< Home Rent >>>  ";
+			cout << "<<< Home Rent >>>\n  ";
 			cout << "The Date: ";
 			cin >> HomeRent.Date[0];
 			cout << "value : ";
 			cin >> HomeRent.Value[0];
 			TotalRecurring += HomeRent.Value[0];
 			break;
+		case 9:
+			cout << "<<<OTHERS>>>\n";
+			do
+			{
+				cout << "<<_" << OtherCounter + 1 << "_>>\n ";
+				cout << "Name : ";
+				cin >> Other.RName[OtherCounter];
+				cout << "Date : ";
+				cin >> Other.Date[OtherCounter];
+				cout << "Value : ";
+				cin >> Other.Value[OtherCounter];
+				TotalOther += Other.Value[OtherCounter];
+				cout << "Do you want to add more Others costs ? \"yes\" OR \"no\" \n";
+				cin >> answer;
+				OtherCounter++;
+			} while (answer == "yes" || answer == "Yes");
+			break;
 		}
-		TotalRecurring += (TotalFood + TotalFuel);
+		TotalRecurring += (TotalFood + TotalFuel + TotalOther);
 		cout << endl << "-------------------------------------------------------------\n";
 		cout << "Do you want to add more recurring data (yes/no)? ";
 		cin >> ans;
@@ -665,379 +684,282 @@ void EditSource(SourceInfo SoIn[], int NumSource)
 
 }//end edit of source
 
- //function to edit expense of the user
-void EditRec(int& FoodCounter, int& FuelCounter, RecurringInfo& Food, RecurringInfo& HomeRent, RecurringInfo& CarFuel, RecurringInfo& ElecBill, RecurringInfo& WaterBill, RecurringInfo& GasBill, RecurringInfo& Wi_Fi, RecurringInfo& MobileBill)
-{
-	bool correct;
-	int userAns, OldVal, NewVal;
-	int OldDate, NewDate;
-	char ans;
-	do
-	{
-		cout << "choose what do u want to edit in your Recurring List \n_1_Food\n_2_Car Fuel\n_3_Electricity Bill\n_4_Water Bill\n_5_Gas Bill\n_6_Wi_Fi <3 \n_7_Mobile Bill\n_8_Home Rent \n ";
-		cin >> userAns;
-		switch (userAns)
-		{
-		case 1:
-			int choice1;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date\n  ";
-			cin >> choice1;
-			if (choice1 == 1)
-			{
-				cout << "<<< Food (Value) >>>\n";
-				cout << "enter old value of your Food :\n ";
-				cin >> OldVal;
-				cout << "enter the date of old value of food :\n ";
-				cin >> OldDate;
-				cout << "enter new value of your Food : \n";
-				cin >> NewVal;
-				for (int i = 0; i < FoodCounter; i++)
-				{
-					if (Food.Date[i] == OldDate && Food.Value[i] == OldVal)
-					{
-						Food.Value[i] = NewVal;
-						correct = true;
-						cout << "  the new value is  :   " << Food.Value[i] << endl;
-						cout << "---------------------------------------------\n";
-					}
-					else
-						correct = false;
-
-				}
-				if (!correct)
-					cout << "the value and the date don't match :( \n";
-			}
-			if (choice1 == 2)
-			{
-				cout << "<<< Food (Date) >>>\n";
-				cout << "enter the date of old value of food : \n";
-				cin >> OldDate;
-				cout << "enter old value of your Food : \n";
-				cin >> OldVal;
-
-				cout << "enter new date of your Food : \n";
-				cin >> NewDate;
-				for (int i = 0; i < FoodCounter; i++)
-				{
-					if (Food.Date[i] == OldDate && Food.Value[i] == OldVal)
-					{
-						Food.Date[i] = NewDate;
-						correct = true;
-						cout << "  the new Date is  :   " << Food.Date[i] << endl;
-						cout << "---------------------------------------------\n";
-					}
-					else
-						correct = false;
-
-
-				}
-				if (correct == false)
-					cout << "the value and the date don't match :( \n";
-			}
-
-			break;
-		case 2:
-			int choice2;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n  ";
-			cin >> choice2;
-			if (choice2 == 1)
-			{
-				cout << "<<< Car Fuel (Value) >>>\n";
-				cout << "enter old value of your Car fuel : \n";
-				cin >> OldVal;
-				cout << "enter the date of old value of Car fuel :\n ";
-				cin >> OldDate;
-				cout << "enter new value of your Car fuel :\n ";
-				cin >> NewVal;
-				for (int i = 0; i < FuelCounter; i++)
-				{
-					if (CarFuel.Date[i] == OldDate && CarFuel.Value[i] == OldVal)
-					{
-						CarFuel.Value[i] = NewVal;
-						correct = true;
-						cout << "  the new value is  :   " << CarFuel.Value[i] << endl;
-						cout << "---------------------------------------------\n";
-					}
-					else
-						correct = false;
-
-				}
-				if (!correct)
-					cout << "the value and the date don't match :( \n";
-			}
-			if (choice2 == 2)
-			{
-				cout << "<<< Car Fuel (Date) >>>\n";
-				cout << "enter the date of old value of Car Fuel : \n";
-				cin >> OldDate;
-				cout << "enter old value of your Car Fuel : \n";
-				cin >> OldVal;
-
-				cout << "enter new date of your Car Fuel : \n ";
-				cin >> NewDate;
-				for (int i = 0; i < FuelCounter; i++)
-				{
-					if (CarFuel.Date[i] == OldDate && CarFuel.Value[i] == OldVal)
-					{
-						CarFuel.Date[i] = NewDate;
-						correct = true;
-						cout << "  the new Date is  :   " << CarFuel.Date[i] << endl;
-						cout << "---------------------------------------------\n";
-					}
-					else
-						correct = false;
-				}
-				if (correct == false)
-					cout << "the value and the date don't match :( \n ";
-			}
-			break;
-		case 3:
-			int choice3;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n ";
-			cin >> choice3;
-			if (choice3 == 1)
-			{
-				cout << "<<< Electricity Bill (Value) >>>\n";
-				cout << "enter old value of your Electricity Bill : \n";
-				cin >> OldVal;
-				cout << "enter new value of your Electricity Bill :\n";
-				cin >> NewVal;
-				ElecBill.Value[0] = NewVal;
-				cout << "  the new value is  :   " << NewVal << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			if (choice3 == 2)
-			{
-				cout << "<<< Electricity Bill (Date) >>>\n";
-				cout << "enter old date of your Electricity Bill : \n";
-				cin >> OldDate;
-				cout << "enter new date of your Electricity Bill : \n";
-				cin >> NewDate;
-				ElecBill.Date[0] = NewDate;
-				cout << "  the new Date is  :   " << NewDate << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			break;
-		case 4:
-			int choice4;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n  ";
-			cin >> choice4;
-			if (choice4 == 1)
-			{
-				cout << "<<< Water Bill (Value) >>>\n";
-				cout << "enter old value of your Water Bill :\n";
-				cin >> OldVal;
-				cout << "enter new value of your Water Bill \n:";
-				cin >> NewVal;
-				WaterBill.Value[0] = NewVal;
-				cout << "  the new value is  :   " << NewVal << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			if (choice4 == 2)
-			{
-				cout << "<<<  Water Bill (Date) >>>\n";
-				cout << "enter old date of your Water Bill :\n";
-				cin >> OldDate;
-				cout << "enter new date of your Water Bill :\n";
-				cin >> NewDate;
-				WaterBill.Date[0] = NewDate;
-				cout << "  the new Date is  :   " << NewDate << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			break;
-		case 5:
-			int choice5;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date  ";
-			cin >> choice5;
-			if (choice5 == 1)
-			{
-				cout << "<<< Gas Bill (Value) >>>\n";
-				cout << "enter old value of your Gas Bill : ";
-				cin >> OldVal;
-				cout << "enter new value of your Gas Bill : ";
-				cin >> NewVal;
-				GasBill.Value[0] = NewVal;
-				cout << "  the new value is  :   " << NewVal << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			if (choice5 == 2)
-			{
-				cout << "<<< Gas Bill (Date) >>>\n";
-				cout << "enter old date of your Water Bill : ";
-				cin >> OldDate;
-				cout << "enter new date of your Water Bill : ";
-				cin >> NewDate;
-				GasBill.Date[0] = NewDate;
-				cout << "  the new Date is  :   " << NewDate << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			break;
-		case 6:
-			int choice6;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n ";
-			cin >> choice6;
-			if (choice6 == 1)
-			{
-				cout << "<<< Wi_Fi Bill (Value) >>>\n";
-				cout << "enter old value of your Wi_Fi Bill : ";
-				cin >> OldVal;
-				cout << "enter new value of your Wi_Fi Bill : ";
-				cin >> NewVal;
-				Wi_Fi.Value[0] = NewVal;
-				cout << "  the new value is  :   " << NewVal << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			if (choice6 == 2)
-			{
-				cout << "<<< Wi_Fi Bill (Date) >>>\n";
-				cout << "enter old date of your Wi_Fi Bill : ";
-				cin >> OldDate;
-				cout << "enter new date of your Wi_Fi Bill : ";
-				cin >> NewDate;
-				Wi_Fi.Date[0] = NewDate;
-				cout << "  the new Date is  :   " << NewDate << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			break;
-		case 7:
-			int choice7;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date  ";
-			cin >> choice7;
-			if (choice7 == 1)
-			{
-				cout << "<<< Mobile Bill (Value) >>>\n";
-				cout << "enter old value of your Mobile Bill : ";
-				cin >> OldVal;
-				cout << "enter new value of your Mobile Bill : ";
-				cin >> NewVal;
-				MobileBill.Value[0] = NewVal;
-				cout << "  the new value is  :   " << NewVal << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			if (choice7 == 2)
-			{
-				cout << "<<< Mobile Bill (Date) >>>\n";
-				cout << "enter old date of your Mobile Bill : ";
-				cin >> OldDate;
-				cout << "enter new date of your Mobile Bill : ";
-				cin >> NewDate;
-				MobileBill.Date[0] = NewDate;
-				cout << "  the new Date is  :   " << NewDate << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			break;
-		case 8:
-			int choice8;
-			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date  ";
-			cin >> choice8;
-			if (choice8 == 1)
-			{
-				cout << "<<< Home Rent (Value) >>>\n";
-				cout << "enter old value of your Home Rent : ";
-				cin >> OldVal;
-				cout << "enter new value of your Home Rent : ";
-				cin >> NewVal;
-				HomeRent.Value[0] = NewVal;
-				cout << "  the new value is  :   " << NewVal << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			if (choice8 == 2)
-			{
-				cout << "<<< Home Rent (Date) >>>\n";
-				cout << "enter old date of your Home Rent : ";
-				cin >> OldDate;
-				cout << "enter new date of your Home Rent : ";
-				cin >> NewDate;
-				HomeRent.Date[0] = NewDate;
-				cout << "  the new Date is  :   " << NewDate << endl;
-				cout << "-------------------------------------------------------------------\n";
-			}
-			break;
-		}
-		cout << "Do you want to Edit more Recurring ? if yes press 'y' \n";
-		cin >> ans;
-	} while (ans == 'y' || ans == 'Y');
+// //function to edit recurring expense of the user
+//void EditRec(int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringInfo& Food, RecurringInfo& HomeRent, RecurringInfo& CarFuel, RecurringInfo& ElecBill, RecurringInfo& WaterBill, RecurringInfo& GasBill, RecurringInfo& Wi_Fi, RecurringInfo& MobileBill, RecurringInfo& Other)
+//{
+//
+//	int userAns, NewVal, NewDate;
+//	char ans;
+//	do
+//	{
+//		ListRecurring(FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Other);
+//
+//		cout << endl << "choose what do u want to edit in your Recurring List \n ";
+//		cin >> userAns;
+//		switch (userAns)
+//		{
+//		case 1://Food edit
+//			int FoodNo, choice1;
+//			cout << "Which food no. you want to edit ?!! ";
+//			cin >> FoodNo;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n  ";
+//			cin >> choice1;
+//			if (choice1 == 1)
+//			{
+//				cout << "Enter your new value :: ";
+//				cin >> NewVal;
+//				Food.Value[FoodNo - 1] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice1 == 2)
+//			{
+//				cout << "Enter your new Date :: ";
+//				cin >> NewDate;
+//				Food.Date[FoodNo - 1] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		case 2://Car Fuel edit
+//			int CarFuelNo, choice2;
+//			cout << "Which car fuel no. you want to edit ?!! ";
+//			cin >> CarFuelNo;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n  ";
+//			cin >> choice2;
+//			if (choice2 == 1)
+//			{
+//				cout << "Enter your new value :: ";
+//				cin >> NewVal;
+//				CarFuel.Value[CarFuelNo - 1] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice1 == 2)
+//			{
+//				cout << "Enter your new Date :: ";
+//				cin >> NewDate;
+//				CarFuel.Date[CarFuelNo - 1] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		case 3://Electric bill edit
+//			int choice3;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n ";
+//			cin >> choice3;
+//			if (choice3 == 1)
+//			{
+//				cout << "<<< Electricity Bill (Value) >>>\n";
+//				cout << "enter new value of your Electricity Bill :\n";
+//				cin >> NewVal;
+//				ElecBill.Value[0] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice3 == 2)
+//			{
+//				cout << "<<< Electricity Bill (Date) >>>\n";
+//				cout << "enter new date of your Electricity Bill : \n";
+//				cin >> NewDate;
+//				ElecBill.Date[0] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		case 4://Home rent edit 
+//			int choice4;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date \n  ";
+//			cin >> choice4;
+//			if (choice4 == 1)
+//			{
+//				cout << "<<< Home Rent (Value) >>>\n";
+//				cout << "enter new value of your Home Rent : ";
+//				cin >> NewVal;
+//				HomeRent.Value[0] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice4 == 2)
+//			{
+//				cout << "<<< Home Rent (Date) >>>\n";
+//				cout << "enter new date of your Home Rent : ";
+//				cin >> NewDate;
+//				HomeRent.Date[0] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		case 5://Water bill edit 
+//			int choice5;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date  ";
+//			cin >> choice5;
+//			if (choice5 == 1)
+//			{
+//				cout << "<<< Water Bill (Value) >>>\n";
+//				cout << "enter new value of your Water Bill \n:";
+//				cin >> NewVal;
+//				WaterBill.Value[0] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice5 == 2)
+//			{
+//				cout << "<<<  Water Bill (Date) >>>\n";
+//				cout << "enter new date of your Water Bill :\n";
+//				cin >> NewDate;
+//				WaterBill.Date[0] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		case 6://Gas bill edit
+//			int choice6;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date  ";
+//			cin >> choice6;
+//			if (choice6 == 1)
+//			{
+//				cout << "<<< Gas Bill (Value) >>>\n";
+//				cout << "enter new value of your Gas Bill \n:";
+//				cin >> NewVal;
+//				GasBill.Value[0] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice6 == 2)
+//			{
+//				cout << "<<<  Gas Bill (Date) >>>\n";
+//				cout << "enter new date of your Gas Bill :\n";
+//				cin >> NewDate;
+//				GasBill.Date[0] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//		case 7://Wi_Fi bill edit
+//			int choice7;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date  ";
+//			cin >> choice7;
+//			if (choice7 == 1)
+//			{
+//				cout << "<<< Wi_Fi Bill (Value) >>>\n";
+//				cout << "enter new value of your Wi_Fi Bill \n:";
+//				cin >> NewVal;
+//				Wi_Fi.Value[0] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice7 == 2)
+//			{
+//				cout << "<<<  Wi_Fi Bill (Date) >>>\n";
+//				cout << "enter new date of your Wi_Fi Bill :\n";
+//				cin >> NewDate;
+//				Wi_Fi.Date[0] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		case 8://Mobile bill edit
+//			int choice8;
+//			cout << "You want to edit the Value OR Date ?!\n _1_Value \n _2_Date  ";
+//			cin >> choice8;
+//			if (choice8 == 1)
+//			{
+//				cout << "<<< Mobile Bill (Value) >>>\n";
+//				cout << "enter new value of your Mobile Bill \n:";
+//				cin >> NewVal;
+//				MobileBill.Value[0] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice8 == 2)
+//			{
+//				cout << "<<<  Mobile Bill (Date) >>>\n";
+//				cout << "enter new date of your Mobile Bill :\n";
+//				cin >> NewDate;
+//				MobileBill.Date[0] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		case 9://other Rec. edit
+//			int OtherNo, choice9;
+//			string NewName;
+//			cout << "Which  no. you want to edit ?!! ";
+//			cin >> OtherNo;
+//			cout << "You want to edit the Name OR Value OR Date ?!\n _1_Name \n _2_Value \n _3_Date \n ";
+//			cin >> choice1;
+//			if (choice9 == 1)
+//			{
+//				cout << "please enter your New name :) : ";
+//				cin.ignore();
+//				getline(cin, NewName);
+//				Other.RName[OtherNo - 1] = NewName;
+//				cout << "DONE :) " << endl;
+//			}
+//			if (choice9 == 2)
+//			{
+//				cout << "Enter your new Vale :: ";
+//				cin >> NewVal;
+//				Other.Value[OtherNo - 1] = NewVal;
+//				cout << "Done :) " << endl;
+//			}
+//			if (choice9 == 3)
+//			{
+//				cout << "Enter your new Date :: ";
+//				cin >> NewDate;
+//				Other.Date[OtherNo - 1] = NewDate;
+//				cout << "Done :) " << endl;
+//			}
+//			break;
+//
+//		}
+//		cout << "Do you want to Edit more Recurring ? if yes press 'y' \n";
+//		cin >> ans;
+//	} while (ans == 'y' || ans == 'Y');
+//
+//
+//}//end edit recurring
 
 
-}//end edit recurring
-
-void ListSource(SourceInfo SoIn[], int NumSource)
-{
-	cout.setf(ios::fixed);
-	cout.setf(ios::showpoint);
-	cout.precision(2);
-
-	cout << "\t\tYour recurrent Sources is :: \n";
-
-	cout << "------------------------------------------------------------------------------" << endl;
-	cout << "#Num\t Name\t Day\t Value \n";
-	cout << "------------------------------------------------------------------------------" << endl;
-
-	for (int i = 0; i < NumSource; i++)
-	{
-		if (SoIn[i].tybe == 2)
-			cout << i + 1 << "\t " << SoIn[i].SName << "\t " << SoIn[i].Date << "\t " << SoIn[i].Value << "$"<< endl;
-
-	}
-
-	cout << "-----------------------------------------------------------------------------" << endl;
-	cout << "\t\tAnd your instant incomes is :: \n";
-	cout << "-----------------------------------------------------------------------------" << endl;
-	cout << "#Num\t Name\t Day\t Month\t Value \n";
-	cout << "-----------------------------------------------------------------------------" << endl;
-
-	for (int i = 0; i < NumSource; i++)
-	{
-		if (SoIn[i].tybe == 1)
-			cout << i + 1 << "\t " << SoIn[i].SName << "\t " << SoIn[i].Date << "\t " << SoIn[i].month << "\t " << SoIn[i].Value << "$" << endl;
-
-	}
-
-	cout << "-------------------------------------------------------------------------------" << endl;
-
-
-}//end list Source
-
-void ListRecurring(int& FoodCounter, int& FuelCounter, RecurringInfo& Food, RecurringInfo& HomeRent, RecurringInfo& CarFuel, RecurringInfo& ElecBill, RecurringInfo& WaterBill, RecurringInfo& GasBill, RecurringInfo& Wi_Fi, RecurringInfo& MobileBill)
+void ListRecurring(int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringInfo& Food, RecurringInfo& HomeRent, RecurringInfo& CarFuel, RecurringInfo& ElecBill, RecurringInfo& WaterBill, RecurringInfo& GasBill, RecurringInfo& Wi_Fi, RecurringInfo& MobileBill, RecurringInfo& Other)
 {
 
-	cout << "                         << Food detailes >>           \n ";
+	cout << "                         <<_1_ Food detailes >>           \n ";
 	cout << "Food no.\tDate\tValue\n";
 	for (int i = 0; i < FoodCounter; i++)
 	{
 		cout << "    " << i + 1 << "     \t" << Food.Date[i] << "     \t" << Food.Value[i] << endl << endl;
 	}
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                       << Car Fuel detailes >>           \n ";
+	cout << "                       <<_2_ Car Fuel detailes >>           \n ";
 	cout << "car fuel no.\tDate\tValue\n";
 	for (int i = 0; i < FuelCounter; i++)
 	{
 		cout << "     " << i + 1 << "     \t" << CarFuel.Date[i] << "    \t" << CarFuel.Value[i] << endl << endl;
 	}
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Electricity Bill >>>      \n ";
+	cout << "                        <<_3_ Electricity Bill >>>      \n ";
 	cout << "The Date\tValue\n";
 	cout << "   " << ElecBill.Date[0] << "  \t\t" << ElecBill.Value[0] << endl;
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Home Rent Bill >>>      \n ";
+	cout << "                        <<_4_ Home Rent Bill >>>      \n ";
 	cout << "The Date\tValue\n";
 	cout << "   " << HomeRent.Date[0] << " \t \t" << HomeRent.Value[0] << endl;
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Water Bill >>>      \n ";
+	cout << "                        <<_5_ Water Bill >>>      \n ";
 	cout << "The Date\tValue\n";
 	cout << "   " << WaterBill.Date[0] << "  \t\t" << WaterBill.Value[0] << endl;
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Gas Bill >>>      \n ";
+	cout << "                        <<_6_ Gas Bill >>>      \n ";
 	cout << "The Date\tValue\n";
 	cout << "   " << GasBill.Date[0] << "  \t\t" << GasBill.Value[0] << endl;
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Wi_Fi Bill >>>      \n ";
+	cout << "                        <<_7_ Wi_Fi Bill >>>      \n ";
 	cout << "The Date\tValue\n";
 	cout << "   " << Wi_Fi.Date[0] << "  \t\t" << Wi_Fi.Value[0] << endl;
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Mobile Bill >>>      \n ";
+	cout << "                        <<_8_ Mobile Bill >>>      \n ";
 	cout << "The Date\tValue\n";
 	cout << "   " << MobileBill.Date[0] << " \t \t" << MobileBill.Value[0] << endl;
+	cout << endl << "------------------------------------------------------------------------------\n";
+	cout << "                         <<_9_ another detailes >>           \n ";
+	cout << "Name\tDate\tValue\n";
+	for (int i = 0; i < OtherCounter; i++)
+	{
+		cout << "_" << i + 1 << "_ " << Other.RName[i] << "     \t" << Other.Date[i] << "     \t" << Other.Value[i] << endl << endl;
+	}
 	cout << endl << "------------------------------------------------------------------------------\n";
 
 
@@ -1562,6 +1484,7 @@ void DisDetalied(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumExpense, double U
 
 
 }// end detailed status
+
 void ListSource(SourceInfo SoIn[], int NumSource)
 {
 	cout.setf(ios::fixed);
