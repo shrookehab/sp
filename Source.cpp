@@ -35,12 +35,7 @@ struct RecurringInfo
 	int Date = NULL;
 	double Value = NULL;
 };
-struct All
-{
-	SourceInfo SI;
-	ExpenseInfo EI;
-	RecurringInfo RI;
-};
+
 void MainMenu();
 double AddSource(SourceInfo Soln[], int);
 double AddExpense(ExpenseInfo ExIn[], int);
@@ -58,15 +53,17 @@ void DeleteSource(SourceInfo SoIn[], int&);
 void DeleteExpens(ExpenseInfo ExIn[], int&);
 void DeleteRec(int&, int&, int&, RecurringInfo food[], RecurringInfo &, RecurringInfo carfuel[], RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo &, RecurringInfo&, RecurringInfo othrs[]);
 
+void DisDetalied(SourceInfo SoIn[], ExpenseInfo ExIn[], int, int, double, double, double, int, int, int, RecurringInfo food[], RecurringInfo, RecurringInfo carfuel[], RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo others[]);
 
 void DisQuick(double, double, double);
 double GenerateReport(SourceInfo Soln[], ExpenseInfo ExIn[], RecurringInfo Food[], RecurringInfo&, RecurringInfo CarFuel[], RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo Others[], int&, int&, int&, int&, int&, int&, int&, int&, int&, double&);
-//void DateRange(int, int);
 
-//void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int, int, double, double, double, int&, int&, int&, RecurringInfo food[], RecurringInfo&, RecurringInfo carfuel[], RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo&, RecurringInfo others[]);
-//void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int, int, double, double, double, int, int, RecurringInfo food[], RecurringInfo, RecurringInfo carfuel[], RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo);
 
-int main()
+void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int, int, double, double, double, int, int, int, RecurringInfo food[], RecurringInfo, RecurringInfo carfuel[], RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo others[]);
+void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, int OtherCounter, RecurringInfo Others[], RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill);
+
+
+void main()
 {
 	cout << "||-----------------------------------------------------------------------------------------------||\n";
 	cout << "||-----------------------------------------------------------------------------------------------||\n||\t\t\t\t \t\t\t\t \t\t\t\t ||\n";
@@ -92,30 +89,11 @@ int main()
 	}
 
 	else if (charcter == 'e' || charcter == 'E')
-		return 0; //to exit from the program
-				  //exit(0); //to exit from the programe
+		exit(0); //to exit from the program
+
 
 	system("pause");
-	return 0;
-	//cout << "-----------------------------------------------------------------------------------------------------------------------\n";
-	//cout << "Welcome in our programe \" BUDGET TRACKER \" ;)...\n\n\HERE is our MAINMENU ;).. " << endl;
-	//cout << "-----------------------------------------------------------------------------------------------------------------------\n";
 
-	//MainMenu(); //choice's function
-
-	//char charcter;
-
-	//cout << "If you want to EXIT from our programe so press the leter \"e\"  :'(.... \n\n ";
-
-	//cin >> charcter;
-
-	//if (charcter == 'e' || charcter == 'E')
-	//	exit(0); //to exit from the programe
-	///*return 0;*/ //to exit from the program
-
-
-	//system("pause");
-	//return 0;
 }
 //fuction that the user will choose from
 void MainMenu()
@@ -135,7 +113,7 @@ void MainMenu()
 
 
 	//to read the saved data from a text file 
-	//ReadData(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
+	ReadData(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Others, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
 
 
 
@@ -158,9 +136,9 @@ void MainMenu()
 
 		cout << "Please enter number _8_ to Delete any value :)... \n\n";
 
-		cout << "Please enter number _9_ to Show quick view on your current status :)... \n\n";
+		cout << "Please enter number _9_ to Show quick view on your current status (monthly) :) \n\n";
 
-		cout << "Please enter number _10_ to Show the detailed status :)... \n\n";
+		cout << "Please enter number _10_ to Show the detailed status of a month :)... \n\n";
 
 		cout << "Please enter number _11_ to generate a report :)... \n\n";
 
@@ -181,7 +159,7 @@ void MainMenu()
 				system("cls");
 				cout << "ERROR !! wrong input " << endl;
 				cin.clear();
-				cin.ignore(1000, '\n');
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				cout << "Hello user :) how many source you want to add : ";
 				cin >> SourcesEachTime;
 
@@ -203,7 +181,7 @@ void MainMenu()
 				system("cls");
 				cout << "ERROR !! wrong input " << endl;
 				cin.clear();
-				cin.ignore(1000, '\n');
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
 				cout << "Hello user :) how many instantaneous expenses you want to add : ";
 				cin >> ExpenseEachTime;
 
@@ -296,7 +274,7 @@ void MainMenu()
 
 		case 10://Diplay Delailed status
 			system("cls");
-			//DisDetalied(SoIn, ExIn, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
+			DisDetalied(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Others);
 			break;
 
 		case 11://Generated a report
@@ -392,8 +370,7 @@ void MainMenu()
 			//default:
 			//cout << "\tUNDEFIND CHOICE :(.. \n\n";
 
-			//system("pause");
-			//system("cls");
+
 		}
 
 		string answer;
@@ -413,7 +390,7 @@ void MainMenu()
 			//clean screen at first then exit from the function
 			system("cls");
 			break; //to exit from this function
-				   /*system("pause");*/
+
 		}
 
 		else
@@ -423,7 +400,7 @@ void MainMenu()
 	}
 
 	//saving everything in a file :) 
-	//	InFile(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Others);
+	InFile(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Others);
 
 }
 double AddSource(SourceInfo SoIn[], int NumSource)
@@ -447,24 +424,46 @@ double AddSource(SourceInfo SoIn[], int NumSource)
 
 			cout << "please enter source  " << i + 1 << "  date :: ";
 			cin >> SoIn[i].Date;
-			cout << endl;
+			while (cin.fail())
+			{
+				//system("cls");
+				cout << "ERROR !! wrong input " << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "please enter source  " << i + 1 << "  date :: ";
+				cin >> SoIn[i].Date;
 
+			}
+			cout << endl;
 			cout << "please enter source  " << i + 1 << "  value :: ";
 			cin >> SoIn[i].Value;
+			while (cin.fail())
+			{
+				//system("cls");
+				cout << "ERROR !! wrong input " << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "please enter source  " << i + 1 << "  value :: ";
+				cin >> SoIn[i].Value;
+
+			}
 			cout << endl;
 
 			cout << "please enter your income tybe ( _1_for instant /_2_for recurrent) :: ";
 			cin >> SoIn[i].tybe;
+			while (cin.fail())
+			{
+				//system("cls");
+				cout << "ERROR !! wrong input " << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "please enter your income tybe ( _1_for instant /_2_for recurrent) :: ";
+				cin >> SoIn[i].tybe;
+
+			}
 			cout << endl;
 
-			/*if (SoIn[i].tybe == 1)
-			{
-			cout << " since this income is instant :) So plz enter the month you have it in (ex: April= 4)  :: ";
-			cin >> SoIn[i].month;
-			}*/
-			/*cout << "please enter your income tybe ( _1_for instant /_2_for recurrent) :: ";
-			cin >> SoIn[i].tybe;
-			cout << endl;*/
+
 			while (true)
 			{
 				if (SoIn[i].tybe == 1)
@@ -495,13 +494,12 @@ double AddSource(SourceInfo SoIn[], int NumSource)
 			i++;
 	}
 
-
 	return UserSources;
 }
 
 double AddExpense(ExpenseInfo ExIn[], int NumExpense)
 {
-	int DateNum[5];
+
 	double TotalExpense = 0;
 	int i = 0;
 	while (i < NumExpense)
@@ -515,11 +513,33 @@ double AddExpense(ExpenseInfo ExIn[], int NumExpense)
 			getline(cin, ExIn[i].EName);
 			cout << endl;
 
-			cout << "enter expense  " << i + 1 << " date " << ":";
+			cout << "enter expense  " << i + 1 << " day " << ":";
 			cin >> ExIn[i].Date;
+			while (cin.fail())
+			{
+				//system("cls");
+				cout << "ERROR !! wrong input " << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "enter expense  " << i + 1 << " day " << ":";
+				cin >> ExIn[i].Date;
+
+			}
+
 			cout << endl;
 			cout << "enter expense " << i + 1 << "  month (ex: April= 4)  " << ":";
 			cin >> ExIn[i].month;
+			while (cin.fail())
+			{
+				//system("cls");
+				cout << "ERROR !! wrong input " << endl;
+				cin.clear();
+				cin.ignore(numeric_limits<streamsize>::max(), '\n');
+				cout << "enter expense " << i + 1 << "  month (ex: April= 4)  " << ":";
+				cin >> ExIn[i].month;
+
+			}
+
 			cout << endl;
 
 			cout << "enter expense  " << i + 1 << "  value " << ":";
@@ -534,19 +554,6 @@ double AddExpense(ExpenseInfo ExIn[], int NumExpense)
 			i++;
 
 	}
-	////print expenses
-	//cout << "#num\tname\tdate\tmonth\tvalue\t\n";
-
-	//for (int i = 0; i < NumExpense; i++)
-	//{
-
-
-	//	cout << i + 1 << "\t" << ExIn[i].EName << "\t" << ExIn[i].Date << "\t" << ExIn[i].month << "\t" << ExIn[i].Value << "\t";
-
-	//	cout << endl;
-	//}
-
-
 
 	return TotalExpense;
 }
@@ -687,6 +694,17 @@ void EditSource(SourceInfo SoIn[], int NumSource)
 		cout << "plz choose number of source you want to edit in :: ";
 		cout << "you choice is :: ";
 		cin >> UserChoice;
+		while (cin.fail())
+		{
+			//system("cls");
+			cout << "ERROR !! wrong input " << endl;
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "you choice is :: ";
+			cin >> UserChoice;
+
+		}
+
 		cout << "choose what do u want to edit in your selectd source \n_1_name\n_2_value\n_3_date\n_4_month(For your instant incomes only :)\n";
 		cout << "your answer is :: ";
 		cin >> ans;
@@ -715,13 +733,20 @@ void EditSource(SourceInfo SoIn[], int NumSource)
 			cout << "DONE :) " << endl;
 
 		}
-		if (ans == 4 && SoIn[UserChoice - 1].tybe == 1)
+		if (ans == 4)
 		{
-			cout << "plz enter your new month ::";
-			cin >> NewMonth;
-			SoIn[UserChoice - 1].month = NewMonth;
+			if (SoIn[UserChoice - 1].tybe == 1)
+			{
 
-			cout << "DONE :) " << endl;
+				cout << "plz enter your new month ::";
+				cin >> NewMonth;
+				SoIn[UserChoice - 1].month = NewMonth;
+
+				cout << "DONE :) " << endl;
+			}
+			else
+				cout << "this is a recurrent source .. NO Month to edit \n";
+
 		}
 		cout << "Do u want to edit any more ! (yes/no) :";
 		cin >> answer;
@@ -967,33 +992,38 @@ void ListSource(SourceInfo SoIn[], int NumSource)
 	cout.setf(ios::showpoint);
 	cout.precision(2);
 
-	cout << "\t\tYour recurrent Sources is :: \n";
-
-	cout << "------------------------------------------------------------------------------" << endl;
-	cout << "#Num\t Name\t Day\t Value \n";
-	cout << "------------------------------------------------------------------------------" << endl;
-
-	for (int i = 0; i < NumSource; i++)
+	if (SoIn[0].Value != NULL)
 	{
-		if (SoIn[i].tybe == 2)
-			cout << i + 1 << "\t " << SoIn[i].SName << "\t " << SoIn[i].Date << "\t " << SoIn[i].Value << "$" << endl;
 
+		cout << "\t\tYour recurrent Sources is :: \n";
+
+		cout << "---------------------------------------------------------------" << endl;
+		cout << "#num\tname\t date\t value \n";
+		cout << "---------------------------------------------------------------" << endl;
+
+		for (int i = 0; i < NumSource; i++)
+		{
+			if (SoIn[i].tybe == 2)
+				cout << i + 1 << "\t" << SoIn[i].SName << " \t" << SoIn[i].Date << " \t" << SoIn[i].Value << endl;
+
+		}
+
+		cout << "-----------------------------------------------------------------" << endl;
+		cout << "\t\tAnd your instant incomes is :: \n";
+		cout << "-----------------------------------------------------------------" << endl;
+		cout << "#num\tname\t date\t month\t value \n";
+		cout << "-----------------------------------------------------------------" << endl;
+
+		for (int i = 0; i < NumSource; i++)
+		{
+			if (SoIn[i].tybe == 1)
+				cout << i + 1 << "\t" << SoIn[i].SName << " \t" << SoIn[i].Date << " \t" << SoIn[i].month << "  \t" << SoIn[i].Value << endl;
+
+		}
 	}
-
-	cout << "-----------------------------------------------------------------------------" << endl;
-	cout << "\t\tAnd your instant incomes is :: \n";
-	cout << "-----------------------------------------------------------------------------" << endl;
-	cout << "#Num\t Name\t Day\t Month\t Value \n";
-	cout << "-----------------------------------------------------------------------------" << endl;
-
-	for (int i = 0; i < NumSource; i++)
-	{
-		if (SoIn[i].tybe == 1)
-			cout << i + 1 << "\t " << SoIn[i].SName << "\t " << SoIn[i].Date << "\t " << SoIn[i].month << "\t " << SoIn[i].Value << "$" << endl;
-
-	}
-
-	cout << "-------------------------------------------------------------------------------" << endl;
+	else
+		cout << "no incomes entred yet " << endl;
+	cout << "----------------------------------------------------------------------" << endl;
 
 
 
@@ -1106,7 +1136,7 @@ void EditExpense(ExpenseInfo ExIn[], int NumOfExp) {
 			cout << "DONE :) " << endl;
 		}
 
-		cout << " DO U want to EDIT any expenses ??? :: ";
+		cout << " DO U want to EDIT any expenses ???(yes/no) :: ";
 		cin.ignore();
 		getline(cin, Answer);
 
@@ -1331,7 +1361,7 @@ void DeleteExpens(ExpenseInfo ExIn[], int & NumOfExp) {
 
 }//end function of delete expense
 
-//function to delete recurring expense
+ //function to delete recurring expense
 void DeleteRec(int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringInfo Food[], RecurringInfo& HomeRent, RecurringInfo CarFuel[], RecurringInfo& ElecBill, RecurringInfo& WaterBill, RecurringInfo& GasBill, RecurringInfo& Wi_Fi, RecurringInfo& MobileBill, RecurringInfo Others[])
 {
 
@@ -1700,7 +1730,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 
 		}//end search for expenses 
 
-		//search for recurring expenses
+		 //search for recurring expenses
 
 		for (int i = 0; i < FoodCounter; i++) {//search for food
 			if (Food[i].Date == StartDay) {
@@ -1858,16 +1888,12 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 		}
 
 
-}//end while (true)
+	}//end while (true)
 
 
-return Current;
+	return Current;
 
 }//end date range function 
-
-
-
-
 
  //to comput the total source, expense, reccuring from a specified date range
 void DisQuick(double UserSources, double TotalExpenses, double TotalRecurring)
@@ -1885,40 +1911,60 @@ void DisQuick(double UserSources, double TotalExpenses, double TotalRecurring)
 
 
 }
-void DisDetalied(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill, RecurringInfo Others[])
+void DisDetalied(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, int OtherCounter, RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill, RecurringInfo Others[])
 {
 	int i = 0, j = 0, k = 0;
-	cout << "------------------------------------------------------------------------------------------------\n";
-	cout << "your income information :)......." << endl;
-	cout << "------------------------------------------------------------------------------------------------\n";
-
-	cout << "Name\tdate\tvalue\n";
-	cout << "------------------------------------------------------------------------------------------------\n";
-
-	while (SoIn[i].Value != NULL)
-
+	if (SoIn[0].Value != NULL)
 	{
-		cout << SoIn[i].SName << "\t" << SoIn[i].Date << "\t" << SoIn[i].Value << endl;
-		i++;
+		cout << "------------------------------------------------------------------------------\n";
+		cout << "\t\tYour recurrent Sources is :: \n";
+
+		cout << "------------------------------------------------------------------------------" << endl;
+		cout << "#num\tname\t date\t value \n";
+		cout << "------------------------------------------------------------------------------" << endl;
+
+		for (int i = 0; i < NumSource; i++)
+		{
+			if (SoIn[i].tybe == 2)
+				cout << i + 1 << "\t" << SoIn[i].SName << " \t" << SoIn[i].Date << " \t" << SoIn[i].Value << endl;
+
+		}
+
+		cout << "-----------------------------------------------------------------------------" << endl;
+		cout << "\t\tAnd your instant incomes is :: \n";
+		cout << "-----------------------------------------------------------------------------" << endl;
+		cout << "#num\tname\t date\t month\t value \n";
+		cout << "-----------------------------------------------------------------------------" << endl;
+
+		for (int i = 0; i < NumSource; i++)
+		{
+			if (SoIn[i].tybe == 1)
+				cout << i + 1 << "\t" << SoIn[i].SName << " \t" << SoIn[i].Date << " \t" << SoIn[i].month << "  \t" << SoIn[i].Value << endl;
+
+		}
+	}
+	if (ExIn[0].Value != NULL)
+	{
+
+		//cout << "-------------------------------------------------------------------------------" << endl;
+
+		cout << "\n----------------------------------------------------------------------\n";
+
+		cout << "                     <<<your instant Expenses information >>>\n";
+
+		for (int i = 0; i < NumExpense; i++)
+		{
+
+			cout << "#num\tdate\tvalue\t\n";
+
+			cout << i + 1 << "\t" << ExIn[i].EName << "\t" << ExIn[i].Date << "\t" << ExIn[i].month << "\t" << ExIn[i].Value << "  \t";
+
+			cout << endl;
+
+		}
+
 
 	}
-	cout << "\n----------------------------------------------------------------------\n";
-	cout << "\n----------------------------------------------------------------------\n";
-
-	cout << "                     <<<your instant Expenses information >>>\n";
-
-	for (int i = 0; i < NumExpense; i++)
-	{
-		cout << "<< Expense Name >> : " << endl;;
-		cout << "#num\tdate\tvalue\t\n";
-		/*for (int j = 0; j < ExIn[i].DateNum[i]; j++)
-		{*/
-		cout << i + 1 << "\t" << ExIn[i].EName << "\t" << ExIn[i].Date << "\t" << ExIn[i].month << "\t" << ExIn[i].Value << "  \t";
-
-		cout << endl;
-
-	}
-
 
 
 
@@ -1926,44 +1972,93 @@ void DisDetalied(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumExpense, double U
 	cout << "\n----------------------------------------------------------------------\n";
 	cout << "                    <<<Recurring information Details >>>\n";
 
-	cout << "                       << Food detailes >>           \n ";
-	cout << "Food no.\tDate\tValue\n";
-	for (int i = 0; i < FoodCounter; i++)
+	if (Food[0].Value != NULL)
 	{
-		cout << "    " << i + 1 << "     \t" << Food[i].Date << "     \t" << Food[i].Value << endl << endl;
+		cout << "                         <<_1_ Food detailes >>           \n ";
+		cout << "Food no.\tDate\tValue\n";
+		for (int i = 0; i < FoodCounter; i++)
+		{
+			cout << "    " << i + 1 << "     \t" << Food[i].Date << "     \t" << Food[i].Value << endl << endl;
+		}
+		cout << endl << "------------------------------------------------------------------------------\n";
+	}
+
+	if (CarFuel[0].Value != NULL)
+	{
+
+		cout << "                       <<_2_ Car Fuel detailes >>           \n ";
+		cout << "car fuel no.\tDate\tValue\n";
+		for (int i = 0; i < FuelCounter; i++)
+		{
+			cout << "     " << i + 1 << "     \t" << CarFuel[i].Date << "    \t" << CarFuel[i].Value << endl << endl;
+		}
+	}
+
+	if (ElecBill.Value != NULL)
+	{
+
+		cout << endl << "------------------------------------------------------------------------------\n";
+		cout << "                        <<_3_ Electricity Bill >>>      \n ";
+		cout << "The Date\tValue\n";
+		cout << "   " << ElecBill.Date << "  \t\t" << ElecBill.Value << endl;
 	}
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                       << Car Fuel detailes >>           \n ";
-	cout << "car fuel no.\tDate\tValue\n";
-	for (int i = 0; i < FuelCounter; i++)
+
+	if (HomeRent.Value != NULL)
 	{
-		cout << "     " << i + 1 << "     \t" << CarFuel[i].Date << "    \t" << CarFuel[i].Value << endl << endl;
+
+		cout << "                        <<_4_ Home Rent Bill >>>      \n ";
+		cout << "The Date\tValue\n";
+		cout << "   " << HomeRent.Date << " \t \t" << HomeRent.Value << endl;
 	}
 	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Electricity Bill >>>      \n ";
-	cout << "The Date\tValue\n";
-	cout << "   " << ElecBill.Date << "  \t\t" << ElecBill.Value << endl;
-	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Home Rent Bill >>>      \n ";
-	cout << "The Date\tValue\n";
-	cout << "   " << HomeRent.Date << " \t \t" << HomeRent.Value << endl;
-	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Water Bill >>>      \n ";
-	cout << "The Date\tValue\n";
-	cout << "   " << WaterBill.Date << "  \t\t" << WaterBill.Value << endl;
-	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Gas Bill >>>      \n ";
-	cout << "The Date\tValue\n";
-	cout << "   " << GasBill.Date << "  \t\t" << GasBill.Value << endl;
-	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Wi_Fi Bill >>>      \n ";
-	cout << "The Date\tValue\n";
-	cout << "   " << Wi_Fi.Date << "  \t\t" << Wi_Fi.Value << endl;
-	cout << endl << "------------------------------------------------------------------------------\n";
-	cout << "                        << Mobile Bill >>>      \n ";
-	cout << "The Date\tValue\n";
-	cout << "   " << MobileBill.Date << " \t \t" << MobileBill.Value << endl;
-	cout << endl << "------------------------------------------------------------------------------\n";
+	if (WaterBill.Value != NULL)
+	{
+
+		cout << "                        <<_5_ Water Bill >>>      \n ";
+		cout << "The Date\tValue\n";
+		cout << "   " << WaterBill.Date << "  \t\t" << WaterBill.Value << endl;
+
+		cout << endl << "------------------------------------------------------------------------------\n";
+
+	}
+	if (GasBill.Value != NULL)
+	{
+
+		cout << "                        <<_6_ Gas Bill >>>      \n ";
+		cout << "The Date\tValue\n";
+		cout << "   " << GasBill.Date << "  \t\t" << GasBill.Value << endl;
+		cout << endl << "------------------------------------------------------------------------------\n";
+	}
+
+	if (Wi_Fi.Value != NULL)
+	{
+
+		cout << "                        <<_7_ Wi_Fi Bill >>>      \n ";
+		cout << "The Date\tValue\n";
+		cout << "   " << Wi_Fi.Date << "  \t\t" << Wi_Fi.Value << endl;
+		cout << endl << "------------------------------------------------------------------------------\n";
+	}
+	if (MobileBill.Value != NULL)
+	{
+
+		cout << "                        <<_8_ Mobile Bill >>>      \n ";
+		cout << "The Date\tValue\n";
+		cout << "   " << MobileBill.Date << " \t \t" << MobileBill.Value << endl;
+
+		cout << endl << "------------------------------------------------------------------------------\n";
+	}
+	if (Others[0].Value != NULL)
+	{
+
+		cout << "                         <<_9_ another detailes >>           \n ";
+		cout << "#num\tName\tDate\tValue\n";
+		for (int i = 0; i < OtherCounter; i++)
+		{
+			cout << "_" << i + 1 << "_ " << Others[i].RName << "     \t" << Others[i].Date << "     \t" << Others[i].Value << endl << endl;
+		}
+		cout << endl << "------------------------------------------------------------------------------\n";
+	}
 
 	cout << "\n----------------------------------------------------------------------\n";
 	cout << "\n----------------------------------------------------------------------\n";
@@ -1988,100 +2083,305 @@ void DisDetalied(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumExpense, double U
 
 }// end detailed status
 
-void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, int otherCounter, RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill, RecurringInfo others[])
+
+ //function to save data in files
+void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, int OtherCounter, RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill, RecurringInfo Others[])
 {
-	ofstream infile;
-	infile.open("your budget info.txt");
+	ofstream OutSource, OutExp, OutRecc;
 
-	infile << "                           Your recurrent Sources is :: \n";
-	infile << "--------------------------------------------------------------------------------------------------" << endl;
-	infile << "#num\tname\t date\t value \n";
-	infile << "--------------------------------------------------------------------------------------------------" << endl;
 
-	for (int i = 0; i < NumSource; i++)
-	{
-		if (SoIn[i].tybe == 2)
-			infile << i + 1 << "\t" << SoIn[i].SName << " \t" << SoIn[i].Date << " \t" << SoIn[i].Value << endl;
+	//saving the recurrent & instantinous sources in file
+	OutSource.open("Source Info.txt");
 
-	}
-
-	infile << "--------------------------------------------------------------------------------------------------" << endl;
-	infile << "                         And your instant incomes is :: \n";
-	infile << "--------------------------------------------------------------------------------------------------" << endl;
-	infile << "#num\tname\t date\t month\t value \n";
-	infile << "--------------------------------------------------------------------------------------------------" << endl;
+	OutSource << "Sources\n";
+	OutSource << '2' << "\n";
 
 	for (int i = 0; i < NumSource; i++)
 	{
 		if (SoIn[i].tybe == 1)
-			infile << i + 1 << "\t" << SoIn[i].SName << " \t" << SoIn[i].Date << " \t" << SoIn[i].month << "  \t" << SoIn[i].Value << endl;
+			OutSource << i + 1 << "\n" << SoIn[i].tybe << "\n" << SoIn[i].SName << "\n" << SoIn[i].Date << "\n" << SoIn[i].month << "\n" << SoIn[i].Value << endl;
+
+		else if (SoIn[i].tybe == 2)
+			OutSource << i + 1 << "\n" << SoIn[i].tybe << "\n" << SoIn[i].SName << "\n" << SoIn[i].Date << "\n" << SoIn[i].Value << endl;
 
 	}
 
-	infile << "--------------------------------------------------------------------------------------------------" << endl;
-	infile << "\t\t instant expenses informartion :: \n";
-	infile << "#num\tname\tdate\tmonth\tvalue\t\n";
+	OutSource.close();
+
+
+	//saving the instantinous expense in another file
+	OutExp.open("Instant Expense Info.txt");
+
+	OutExp << "InstantExpenses\n";
+	OutExp << '1' << "\n";
 
 	for (int i = 0; i < NumExpense; i++)
 	{
-		cout << " Expense Name : " << endl;
 
-		infile << i + 1 << "\t" << ExIn[i].EName << "\t" << ExIn[i].Date << "\t" << ExIn[i].month << "\t" << ExIn[i].Value << "\t";
+		OutExp << i + 1 << "\n" << ExIn[i].EName << "\n" << ExIn[i].Date << "\n" << ExIn[i].month << "\n" << ExIn[i].Value << "\n";
 
-		infile << endl;
+
+	}
+	OutExp.close();
+
+
+
+
+	//saving the recurring expenses in another file
+	OutRecc.open("Reccurring Expenses Info.txt");
+
+	OutRecc << "RecrringExpenses\n";
+	OutRecc << '9' << "\n";
+
+	for (int i = 0; i < FoodCounter; i++)
+	{
+		OutRecc << i + 1 << "\n" << Food[i].Date << "\n" << Food[i].Value << endl;
 	}
 
 
-	infile.close();
-}
+	for (int i = 0; i < FuelCounter; i++)
+	{
+		OutRecc << i + 1 << "\n" << CarFuel[i].Date << "\n" << CarFuel[i].Value << endl;
+	}
+
+	OutRecc << ElecBill.Date << "\n" << ElecBill.Value << endl;
+
+
+	OutRecc << HomeRent.Date << "\n" << HomeRent.Value << endl;
+
+
+	OutRecc << WaterBill.Date << "\n" << WaterBill.Value << endl;
+
+	OutRecc << GasBill.Date << "\n" << GasBill.Value << endl;
+
+	OutRecc << Wi_Fi.Date << "\n" << Wi_Fi.Value << endl;
+
+	OutRecc << MobileBill.Date << "\n" << MobileBill.Value << endl;
+
+	for (int i = 0; i < OtherCounter; i++)
+	{
+		OutRecc << i + 1 << "\n" << Others[i].RName << "\n" << Others[i].Date << "\n" << Others[i].Value << endl;
+	}
+
+
+	OutRecc.close();
+
+
+}//end save data in files
+
 
 void ListExpense(ExpenseInfo ExIn[], int NumOfExp)
 {
 	cout.setf(ios::fixed);
 	cout.setf(ios::showpoint);
 	cout.precision(2);
-	cout << "------------------------------------------------------------------------------" << endl;
-
-	cout << " #Num\t Name\t Day\t Month\t Value\n";
-
-	cout << "------------------------------------------------------------------------------" << endl;
-
-	for (int i = 0; i < NumOfExp; i++)
+	if (ExIn[0].Value != NULL)
 	{
-		cout << i + 1 << "\t " << ExIn[i].EName << "\t " << ExIn[i].Date << "\t " << ExIn[i].month << "\t " << ExIn[i].Value << "$" << "\n";
 
-	}
-	cout << "------------------------------------------------------------------------------" << endl;
-
-}
-
-
-void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill)
-{
-	ifstream InFile;
-
-	string SavedData; // the data will save in
-
-
-	InFile.open("your budget info.txt", ios::binary);
-
-	if (InFile.is_open()) { //if the file is openend it return true else return false
-
-		while (!InFile.eof()) {
-
-			getline(InFile, SavedData);//get the data line by line saved in the string saved data
-			cout << SavedData << endl;//to print the saved data line by line
+		cout << " #Num\t Name\t Day\t Value\t month\n";
+		for (int i = 0; i < NumOfExp; i++)
+		{
+			cout << i + 1 << "\t" << ExIn[i].EName << "\t" << ExIn[i].Date << "\t " << ExIn[i].Value << "$\t" << ExIn[i].month << "\n";
 
 		}
-		InFile.close();
 	}
+	else
+		cout << "No instntaneous expenses are entered yet \n";
+	cout << "-----------------------------------------------------\n";
+}
+//function to read the saved data in files
+void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, int OtherCounter, RecurringInfo Others[], RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill)
+{
+	ifstream InSource, InExpense, InRecurring;
+
+	string SourceData, ExpenseData, RecData; // the data will save in
+
+
+											 //read the saved data of Recurring & instantinous sources from te saved file
+
+	string Title_1;
+	int count_1;
+
+
+	InSource.open("Source Info.txt");
+
+	InSource >> Title_1;
+	InSource >> count_1;
+
+	if (InSource.is_open()) { //if the file is openend it return true else return false
+
+		while (!InSource.eof()) {
+
+
+			for (int i = 0; i < NumSource; i++)
+			{
+				int Index = i + 1;
+
+				InSource >> SoIn[i].tybe;
+
+				if (SoIn[i].tybe == 1) {
+					InSource >> Index;
+					getline(InSource, SoIn[i].SName);
+					InSource >> SoIn[i].Date;
+					InSource >> SoIn[i].month;
+					InSource >> SoIn[i].Value;
+				} //end else if
+
+				else if (SoIn[i].tybe == 2) {
+					InSource >> Index;
+					getline(InSource, SoIn[i].SName);
+					InSource >> SoIn[i].Date;
+					InSource >> SoIn[i].Value;
+
+
+				}//end else if
+
+			}//end for
+
+		}//end while
+
+		InSource.close();
+	}//end if file is opened
 
 	else {
 
-		cout << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
 
 		exit(1);//the program faild
 
 
 	}
+
+
+	//read the saved data of instantinous expenses from te saved file
+
+	string Title_2;
+	int count_2;
+
+
+	InExpense.open("Instant Expense Info.txt");
+
+	InExpense >> Title_2;
+	InExpense >> count_2;
+
+	if (InExpense.is_open()) { //if the file is openend it return true else return false
+
+		while (!InExpense.eof()) {
+
+
+			for (int i = 0; i < NumExpense; i++)
+			{
+				int Index = i + 1;
+
+
+				InExpense >> Index;
+				getline(InExpense, ExIn[i].EName);
+				InExpense >> ExIn[i].Date;
+				InExpense >> ExIn[i].month;
+				InExpense >> ExIn[i].Value;
+
+
+			}//end for
+
+		}//end while
+
+		InExpense.close();
+
+	}//end if file is opened
+
+	else {
+
+		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+
+		exit(1);//the program faild
+
+
+	}
+
+
+	//read the saved data of Recurring expenses from te saved file
+
+	string Title_3;
+	int count_3;
+
+
+	InRecurring.open("Reccurring Expenses Info.txt");
+
+	InRecurring >> Title_3;
+	InRecurring >> count_3;
+
+	if (InRecurring.is_open()) { //if the file is openend it return true else return false
+
+		while (!InRecurring.eof()) {
+
+
+			for (int i = 0; i < FoodCounter; i++)
+			{
+				int Index = i + 1;
+
+				InRecurring >> Index;
+				InRecurring >> Food[i].Date;
+				InRecurring >> Food[i].Value;
+			}
+
+
+			for (int i = 0; i < FuelCounter; i++)
+			{
+				int Index = i + 1;
+
+				InRecurring >> Index;
+				InRecurring >> CarFuel[i].Date;
+				InRecurring >> CarFuel[i].Value;
+			}
+
+			InRecurring >> ElecBill.Date;
+			InRecurring >> ElecBill.Value;
+
+
+			InRecurring >> HomeRent.Date;
+			InRecurring >> HomeRent.Value;
+
+
+			InRecurring >> WaterBill.Date;
+			InRecurring >> WaterBill.Value;
+
+			InRecurring >> GasBill.Date;
+			InRecurring >> GasBill.Value;
+
+			InRecurring >> Wi_Fi.Date;
+			InRecurring >> Wi_Fi.Value;
+
+			InRecurring >> MobileBill.Date;
+			InRecurring >> MobileBill.Value;
+
+			for (int i = 0; i < OtherCounter; i++)
+			{
+				int Index = i + 1;
+
+				InRecurring >> Index;
+				getline(InRecurring, Others[i].RName);
+				InRecurring >> Others[i].Date;
+				InRecurring >> Others[i].Value;
+			}
+
+		}//end while
+
+		InRecurring.close();
+
+	}//end if file is opened
+
+	else {
+
+		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+
+		exit(1);//the program faild
+
+
+	}
+
+
+
+
+
+
 }//end read data function
