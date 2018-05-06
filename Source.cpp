@@ -60,7 +60,7 @@ double GenerateReport(SourceInfo Soln[], ExpenseInfo ExIn[], RecurringInfo Food[
 
 
 void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int, int, double, double, double, int, int, int, RecurringInfo food[], RecurringInfo, RecurringInfo carfuel[], RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo, RecurringInfo others[]);
-void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, int OtherCounter, RecurringInfo Others[], RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill);
+void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringInfo Others[], RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill);
 
 
 void main()
@@ -2089,14 +2089,15 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 {
 	ofstream OutSource, OutExp, OutRecc;
 
+	int SourceCount = NumSource, ExpenseCount = NumExpense, FoodCnt = FoodCounter , FuelCnt = FuelCounter, OthersCnt = OtherCounter;
 
 	//saving the recurrent & instantinous sources in file
 	OutSource.open("Source Info.txt");
 
 	OutSource << "Sources\n";
-	OutSource << '2' << "\n";
+	OutSource << SourceCount << "\n";
 
-	for (int i = 0; i < NumSource; i++)
+	for (int i = 0; i < SourceCount; i++)
 	{
 		if (SoIn[i].tybe == 1)
 			OutSource << i + 1 << "\n" << SoIn[i].tybe << "\n" << SoIn[i].SName << "\n" << SoIn[i].Date << "\n" << SoIn[i].month << "\n" << SoIn[i].Value << endl;
@@ -2113,9 +2114,9 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 	OutExp.open("Instant Expense Info.txt");
 
 	OutExp << "InstantExpenses\n";
-	OutExp << '1' << "\n";
+	OutExp << ExpenseCount << "\n";
 
-	for (int i = 0; i < NumExpense; i++)
+	for (int i = 0; i < ExpenseCount; i++)
 	{
 
 		OutExp << i + 1 << "\n" << ExIn[i].EName << "\n" << ExIn[i].Date << "\n" << ExIn[i].month << "\n" << ExIn[i].Value << "\n";
@@ -2131,15 +2132,17 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 	OutRecc.open("Reccurring Expenses Info.txt");
 
 	OutRecc << "RecrringExpenses\n";
-	OutRecc << '9' << "\n";
 
-	for (int i = 0; i < FoodCounter; i++)
+	OutRecc << FoodCnt << "\n";
+
+	for (int i = 0; i < FoodCnt; i++)
 	{
 		OutRecc << i + 1 << "\n" << Food[i].Date << "\n" << Food[i].Value << endl;
 	}
 
+	OutRecc << FuelCnt << "\n";
 
-	for (int i = 0; i < FuelCounter; i++)
+	for (int i = 0; i < FuelCnt; i++)
 	{
 		OutRecc << i + 1 << "\n" << CarFuel[i].Date << "\n" << CarFuel[i].Value << endl;
 	}
@@ -2158,7 +2161,9 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 
 	OutRecc << MobileBill.Date << "\n" << MobileBill.Value << endl;
 
-	for (int i = 0; i < OtherCounter; i++)
+	OutRecc << OthersCnt << "\n";
+
+	for (int i = 0; i < OthersCnt; i++)
 	{
 		OutRecc << i + 1 << "\n" << Others[i].RName << "\n" << Others[i].Date << "\n" << Others[i].Value << endl;
 	}
@@ -2190,7 +2195,7 @@ void ListExpense(ExpenseInfo ExIn[], int NumOfExp)
 	cout << "-----------------------------------------------------\n";
 }
 //function to read the saved data in files
-void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter, int OtherCounter, RecurringInfo Others[], RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill)
+void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringInfo Others[], RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill)
 {
 	ifstream InSource, InExpense, InRecurring;
 
@@ -2213,7 +2218,7 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 		while (!InSource.eof()) {
 
 
-			for (int i = 0; i < NumSource; i++)
+			for (int i = 0; i < count_1; i++)
 			{
 				int Index = i + 1;
 
@@ -2269,7 +2274,7 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 		while (!InExpense.eof()) {
 
 
-			for (int i = 0; i < NumExpense; i++)
+			for (int i = 0; i < count_2; i++)
 			{
 				int Index = i + 1;
 
@@ -2302,7 +2307,7 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 	//read the saved data of Recurring expenses from te saved file
 
 	string Title_3;
-	int count_3;
+	int count_3, count_4, count_5;
 
 
 	InRecurring.open("Reccurring Expenses Info.txt");
@@ -2315,7 +2320,7 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 		while (!InRecurring.eof()) {
 
 
-			for (int i = 0; i < FoodCounter; i++)
+			for (int i = 0; i < count_3; i++)
 			{
 				int Index = i + 1;
 
@@ -2324,8 +2329,9 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 				InRecurring >> Food[i].Value;
 			}
 
+			InRecurring >> count_4;
 
-			for (int i = 0; i < FuelCounter; i++)
+			for (int i = 0; i < count_4; i++)
 			{
 				int Index = i + 1;
 
@@ -2354,7 +2360,9 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 			InRecurring >> MobileBill.Date;
 			InRecurring >> MobileBill.Value;
 
-			for (int i = 0; i < OtherCounter; i++)
+			InRecurring >> count_5;
+
+			for (int i = 0; i < count_5; i++)
 			{
 				int Index = i + 1;
 
