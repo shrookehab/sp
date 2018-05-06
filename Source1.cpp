@@ -223,23 +223,24 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 
 		while (!InSource.eof()) {
 
-			getline(InSource, SourceData);//get the data line by line saved in the string saved data
 
 			for (int i = 0; i < NumSource; i++)
 			{
+				int Index = i + 1;
+					
+				InSource >> SoIn[i].tybe;
+
 				if (SoIn[i].tybe == 1) {
-					InSource >> i + 1;
-					InSource >> SoIn[i].tybe;
-					InSource >> SoIn[i].SName;
+					InSource >> Index;
+					getline(InSource, SoIn[i].SName);
 					InSource >> SoIn[i].Date;
 					InSource >> SoIn[i].month;
 					InSource >> SoIn[i].Value;
 				} //end else if
 
 				else if (SoIn[i].tybe == 2) {
-					InSource >> i + 1;
-					InSource >> SoIn[i].tybe;
-					InSource >> SoIn[i].SName;
+					InSource >> Index;
+					getline(InSource, SoIn[i].SName);
 					InSource >> SoIn[i].Date;
 					InSource >> SoIn[i].Value ;
 
@@ -278,13 +279,14 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 
 		while (!InExpense.eof()) {
 
-			getline(InExpense, ExpenseData);//get the data line by line saved in the string saved data
 
 			for (int i = 0; i < NumExpense; i++)
 			{
+				int Index = i + 1;
 
-				InExpense >> i + 1;
-				InExpense >> ExIn[i].EName;
+
+				InExpense >> Index;
+				getline (InExpense, ExIn[i].EName);
 				InExpense >> ExIn[i].Date;
 				InExpense >> ExIn[i].month;
 				InExpense >> ExIn[i].Value;
@@ -323,11 +325,12 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 
 		while (!InRecurring.eof()) {
 
-			getline(InRecurring, RecData);//get the data line by line saved in the string saved data
 
 			for (int i = 0; i < FoodCounter; i++)
 			{
-				InRecurring >> i + 1;
+				int Index = i + 1;
+
+				InRecurring >> Index;
 				InRecurring >> Food[i].Date;
 				InRecurring >> Food[i].Value;
 			}
@@ -335,7 +338,9 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 
 			for (int i = 0; i < FuelCounter; i++)
 			{
-				InRecurring >> i + 1;
+				int Index = i + 1;
+
+				InRecurring >> Index;
 				InRecurring >> CarFuel[i].Date; 
 				InRecurring >> CarFuel[i].Value;
 			}
@@ -362,8 +367,10 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpen
 
 			for (int i = 0; i < OtherCounter; i++)
 			{
-				InRecurring >> i + 1;
-				InRecurring >> Others[i].RName;
+				int Index = i + 1;
+
+				InRecurring >> Index;
+				getline (InRecurring, Others[i].RName);
 				InRecurring >> Others[i].Date;
 				InRecurring >> Others[i].Value;
 			}
