@@ -112,12 +112,15 @@ void MainMenu()
 	int FoodCounter = 0, FuelCounter = 0, OtherCounter = 0;
 
 
-	//to read the saved data from a text file 
-	ReadData(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Others, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
 
 
 
 	while (true) {
+
+		//to read the saved data from a text file 
+		ReadData(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Others, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill);
+
+
 		int choice;  //the number of choice that the user will choose
 		int EditChoice;
 		cout << "Please enter number _1_ to Add New Incomes :)...\n\n";
@@ -373,6 +376,10 @@ void MainMenu()
 
 		}
 
+		//saving everything in a file :) 
+		InFile(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Others);
+
+
 		string answer;
 
 		cout << endl << endl << "------------------------------------------------------------------------------------------------------------------------" << endl;
@@ -397,10 +404,9 @@ void MainMenu()
 			system("cls");
 
 
+
 	}
 
-	//saving everything in a file :) 
-	InFile(SoIn, ExIn, NumSource, NumExpense, UserSources, TotalExpenses, TotalRecurring, FoodCounter, FuelCounter, OtherCounter, Food, HomeRent, CarFuel, ElecBill, WaterBill, GasBill, Wi_Fi, MobileBill, Others);
 
 }
 double AddSource(SourceInfo SoIn[], int NumSource)
@@ -1183,8 +1189,8 @@ void DeleteSource(SourceInfo SoIn[], int& NumSource) {
 		bool IsDeleted = false;
 
 		for (int i = 0; i < NumSource; i++) {
-			if (ChoiceNum == i) {//for Instant 
-				for (int j = i - 1; j < (NumSource - 1); j++) {
+			if ((ChoiceNum - 1) == i) {//for Instant 
+				for (int j = i; j < (NumSource - 1); j++) {
 					SoIn[j].SName = SoIn[j + 1].SName;
 					SoIn[j].Date = SoIn[j + 1].Date;
 					SoIn[j].month = SoIn[j + 1].month;
@@ -1286,9 +1292,9 @@ void DeleteExpens(ExpenseInfo ExIn[], int & NumOfExp) {
 		bool IsDeleted = false;
 
 		for (int i = 0; i < NumOfExp; i++) {
-			if (ChoiceNum == i)
+			if ((ChoiceNum - 1)== i)
 			{//for Instant 
-				for (int j = i - 1; j < (NumOfExp - 1); j++)
+				for (int j = i; j < (NumOfExp - 1); j++)
 				{
 					ExIn[j].EName = ExIn[j + 1].EName;
 					ExIn[j].Date = ExIn[j + 1].Date;
@@ -1424,8 +1430,8 @@ void DeleteRec(int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringI
 		case 1:
 
 			for (int i = 0; i < FoodCounter; i++) {
-				if (i == ItemNum) {
-					for (int j = (i - 1); j < (FoodCounter - 1); j++) {
+				if (( ItemNum - 1 ) == i) {
+					for (int j = i; j < (FoodCounter - 1); j++) {
 
 						Food[j].Date = Food[j + 1].Date;
 						Food[j].Value = Food[j + 1].Value;
@@ -1489,8 +1495,8 @@ void DeleteRec(int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringI
 		case 2:
 
 			for (int i = 0; i < FuelCounter; i++) {
-				if (i == ItemNum) {
-					for (int j = (i - 1); j < (FuelCounter - 1); j++) {
+				if ((ItemNum - 1) == i) {
+					for (int j = i; j < (FuelCounter - 1); j++) {
 
 						CarFuel[j].Date = CarFuel[j + 1].Date;
 						CarFuel[j].Value = CarFuel[j + 1].Value;
@@ -1554,8 +1560,8 @@ void DeleteRec(int& FoodCounter, int& FuelCounter, int& OtherCounter, RecurringI
 		case 9:
 
 			for (int i = 0; i < OtherCounter; i++) {
-				if (i == ItemNum) {
-					for (int j = (i - 1); j < (OtherCounter - 1); j++) {
+				if ((ItemNum - 1) == i) {
+					for (int j = i; j < (OtherCounter - 1); j++) {
 
 						Others[j].RName = Others[j + 1].RName;
 						Others[j].Date = Others[j + 1].Date;
@@ -1693,7 +1699,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 					cout << SoIn[i].Date << "/" << StartMonth << "  ";
 					cout << "+" << SoIn[i].Value << " ";
 					cout << SoIn[i].SName << "  [Tybe = Recuirring]  [Current = " << Current << "]";
-					cout << endl;
+					cout << endl << endl;
 				}
 
 
@@ -1708,7 +1714,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 					cout << SoIn[i].Date << "/" << SoIn[i].month << "  ";
 					cout << "+" << SoIn[i].Value << " ";
 					cout << SoIn[i].SName << "  [Tybe = Instantinous]  [Current = " << Current << "]";
-					cout << endl;
+					cout << endl << endl;
 
 				}
 
@@ -1725,7 +1731,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 				cout << ExIn[i].Date << "/" << ExIn[i].month << "  ";
 				cout << "-" << ExIn[i].Value << " ";
 				cout << ExIn[i].EName << "  [Tybe = Instantinous]  [Current = " << Current << "]";
-				cout << endl;
+				cout << endl << endl;
 			}
 
 		}//end search for expenses 
@@ -1740,7 +1746,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 				cout << Food[i].Date << "/" << StartMonth << "  ";
 				cout << "-" << Food[i].Value << " ";
 				cout << "Food_" << i + 1 << "_ [Tybe = Recurring]  [Current = " << Current << "]";
-				cout << endl;
+				cout << endl << endl;
 
 			}//end if 
 		}//end for i
@@ -1754,7 +1760,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 				cout << CarFuel[i].Date << "/" << StartMonth << "  ";
 				cout << "-" << CarFuel[i].Value << " ";
 				cout << "CarFuel_" << i + 1 << "_ [Tybe = Recurring]  [Current = " << Current << "]";
-				cout << endl;
+				cout << endl << endl;
 
 			}//end if 
 		}//end for i
@@ -1768,7 +1774,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 				cout << Others[i].Date << "/" << StartMonth << "  ";
 				cout << "-" << Others[i].Value << " ";
 				cout << Others[i].RName << " [Tybe = Recurring]  [Current = " << Current << "]";
-				cout << endl;
+				cout << endl << endl;
 
 			}//end if 
 		}//end for i
@@ -1780,7 +1786,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 			cout << ElecBill.Date << "/" << StartMonth << "  ";
 			cout << "-" << ElecBill.Value << " ";
 			cout << "Electricity Bill [Tybe = Recurring]  [Current = " << Current << "]";
-			cout << endl;
+			cout << endl << endl;
 
 		}//end if
 
@@ -1791,7 +1797,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 			cout << WaterBill.Date << "/" << StartMonth << "  ";
 			cout << "-" << WaterBill.Value << " ";
 			cout << "Water Bill [Tybe = Recurring]  [Current = " << Current << "]";
-			cout << endl;
+			cout << endl << endl;
 
 		}//end if
 
@@ -1802,7 +1808,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 			cout << GasBill.Date << "/" << StartMonth << "  ";
 			cout << "-" << GasBill.Value << " ";
 			cout << "Gas Bill [Tybe = Recurring]  [Current = " << Current << "]";
-			cout << endl;
+			cout << endl << endl;
 
 		}//end if
 
@@ -1813,7 +1819,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 			cout << Wi_Fi.Date << "/" << StartMonth << "  ";
 			cout << "-" << Wi_Fi.Value << " ";
 			cout << "Wi_Fi Bill [Tybe = Recurring]  [Current = " << Current << "]";
-			cout << endl;
+			cout << endl << endl;
 
 		}//end if
 
@@ -1824,7 +1830,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 			cout << MobileBill.Date << "/" << StartMonth << "  ";
 			cout << "-" << MobileBill.Value << " ";
 			cout << "Mobile Phone Bill [Tybe = Recurring]  [Current = " << Current << "]";
-			cout << endl;
+			cout << endl << endl;
 
 		}//end if
 
@@ -1835,7 +1841,7 @@ double GenerateReport(SourceInfo SoIn[], ExpenseInfo ExIn[], RecurringInfo Food[
 			cout << HomeRent.Date << "/" << StartMonth << "  ";
 			cout << "-" << HomeRent.Value << " ";
 			cout << "Home Rent [Tybe = Recurring]  [Current = " << Current << "]";
-			cout << endl;
+			cout << endl << endl;
 
 		}//end if
 
@@ -2089,7 +2095,7 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 {
 	ofstream OutSource, OutExp, OutRecc;
 
-	int SourceCount = NumSource, ExpenseCount = NumExpense, FoodCnt = FoodCounter , FuelCnt = FuelCounter, OthersCnt = OtherCounter;
+	int SourceCount = NumSource, ExpenseCount = NumExpense, FoodCnt = FoodCounter, FuelCnt = FuelCounter, OthersCnt = OtherCounter;
 
 	//saving the recurrent & instantinous sources in file
 	OutSource.open("Source Info.txt");
@@ -2211,55 +2217,59 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 	InSource.open("Source Info.txt");
 	if (InSource.is_open()) { //if the file is openend it return true else return false
 
-		while (!InSource.eof()) {
+							  //while (!InSource.eof()) {
 
 
-			InSource >> Title_1;
-			InSource >> count_1;
+		InSource >> Title_1;
+		InSource >> count_1;
 
-			NumSource = count_1;
+		NumSource = count_1;
 
-			for (int i = 0; i < NumSource; i++)
-			{
-				int Index = i + 1;
+		for (int i = 0; i < NumSource; i++)
+		{
+			int Index = i + 1;
 
-				InSource >> SoIn[i].tybe;
+			InSource >> Index;
 
-				if (SoIn[i].tybe == 1) {
-					InSource >> Index;
-					getline(InSource, SoIn[i].SName);
-					InSource >> SoIn[i].Date;
-					InSource >> SoIn[i].month;
-					InSource >> SoIn[i].Value;
-				} //end else if
+			InSource >> SoIn[i].tybe;
 
-				else if (SoIn[i].tybe == 2) {
-					InSource >> Index;
-					getline(InSource, SoIn[i].SName);
-					InSource >> SoIn[i].Date;
-					InSource >> SoIn[i].Value;
+			if (SoIn[i].tybe == 1) {
+				getline(InSource, SoIn[i].SName);
+				getline(InSource, SoIn[i].SName);
+				//InSource >> SoIn[i].SName;
+				InSource >> SoIn[i].Date;
+				InSource >> SoIn[i].month;
+				InSource >> SoIn[i].Value;
+			} //end else if
+
+			else if (SoIn[i].tybe == 2) {
+				getline(InSource, SoIn[i].SName);
+				getline(InSource, SoIn[i].SName);
+				//InSource >> SoIn[i].SName;
+				InSource >> SoIn[i].Date;
+				InSource >> SoIn[i].Value;
 
 
-				}//end else if
+			}//end else if
 
-			}//end for
+		}//end for
 
-		}//end while
+		 //}//end while
 
 		InSource.close();
 	}//end if file is opened
 
-	else {
+	 //else {
 
-		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+	 //	cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
 
-		exit(1);//the program faild
-
-
-	}
+	 //	exit(1);//the program faild
 
 
-	//read the saved data of instantinous expenses from te saved file
+	 //}
+
+
+	 //read the saved data of instantinous expenses from te saved file
 
 	string Title_2;
 	int count_2;
@@ -2269,44 +2279,46 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 
 	if (InExpense.is_open()) { //if the file is openend it return true else return false
 
-		while (!InExpense.eof()) {
+							   //while (!InExpense.eof()) {
 
-			InExpense >> Title_2;
-			InExpense >> count_2;
+		InExpense >> Title_2;
+		InExpense >> count_2;
 
-			NumExpense = count_2;
+		NumExpense = count_2;
 
-			for (int i = 0; i < NumExpense; i++)
-			{
-				int Index = i + 1;
-
-
-				InExpense >> Index;
-				getline(InExpense, ExIn[i].EName);
-				InExpense >> ExIn[i].Date;
-				InExpense >> ExIn[i].month;
-				InExpense >> ExIn[i].Value;
+		for (int i = 0; i < NumExpense; i++)
+		{
+			int Index = i + 1;
 
 
-			}//end for
+			InExpense >> Index;
+			getline(InExpense, ExIn[i].EName);
+			getline(InExpense, ExIn[i].EName);
+			//InExpense >> ExIn[i].EName;
+			InExpense >> ExIn[i].Date;
+			InExpense >> ExIn[i].month;
+			InExpense >> ExIn[i].Value;
 
-		}//end while
+
+		}//end for
+
+		 //}//end while
 
 		InExpense.close();
 
 	}//end if file is opened
 
-	else {
+	 //else {
 
-		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+	 //	cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
 
-		exit(1);//the program faild
-
-
-	}
+	 //	exit(1);//the program faild
 
 
-	//read the saved data of Recurring expenses from te saved file
+	 //}
+
+
+	 //read the saved data of Recurring expenses from te saved file
 
 	string Title_3;
 	int count_3, count_4, count_5;
@@ -2317,81 +2329,83 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 
 	if (InRecurring.is_open()) { //if the file is openend it return true else return false
 
-		while (!InRecurring.eof()) {
+								 //while (!InRecurring.eof()) {
 
-			InRecurring >> Title_3;
-			InRecurring >> count_3;
+		InRecurring >> Title_3;
+		InRecurring >> count_3;
 
-			FoodCounter = count_3;
+		FoodCounter = count_3;
 
-			for (int i = 0; i < FoodCounter; i++)
-			{
-				int Index = i + 1;
+		for (int i = 0; i < FoodCounter; i++)
+		{
+			int Index = i + 1;
 
-				InRecurring >> Index;
-				InRecurring >> Food[i].Date;
-				InRecurring >> Food[i].Value;
-			}
+			InRecurring >> Index;
+			InRecurring >> Food[i].Date;
+			InRecurring >> Food[i].Value;
+		}
 
-			InRecurring >> count_4;
-			FuelCounter = count_4;
+		InRecurring >> count_4;
+		FuelCounter = count_4;
 
-			for (int i = 0; i < FuelCounter; i++)
-			{
-				int Index = i + 1;
+		for (int i = 0; i < FuelCounter; i++)
+		{
+			int Index = i + 1;
 
-				InRecurring >> Index;
-				InRecurring >> CarFuel[i].Date;
-				InRecurring >> CarFuel[i].Value;
-			}
+			InRecurring >> Index;
+			InRecurring >> CarFuel[i].Date;
+			InRecurring >> CarFuel[i].Value;
+		}
 
-			InRecurring >> ElecBill.Date;
-			InRecurring >> ElecBill.Value;
-
-
-			InRecurring >> HomeRent.Date;
-			InRecurring >> HomeRent.Value;
+		InRecurring >> ElecBill.Date;
+		InRecurring >> ElecBill.Value;
 
 
-			InRecurring >> WaterBill.Date;
-			InRecurring >> WaterBill.Value;
+		InRecurring >> HomeRent.Date;
+		InRecurring >> HomeRent.Value;
 
-			InRecurring >> GasBill.Date;
-			InRecurring >> GasBill.Value;
 
-			InRecurring >> Wi_Fi.Date;
-			InRecurring >> Wi_Fi.Value;
+		InRecurring >> WaterBill.Date;
+		InRecurring >> WaterBill.Value;
 
-			InRecurring >> MobileBill.Date;
-			InRecurring >> MobileBill.Value;
+		InRecurring >> GasBill.Date;
+		InRecurring >> GasBill.Value;
 
-			InRecurring >> count_5;
-			OtherCounter = count_5;
+		InRecurring >> Wi_Fi.Date;
+		InRecurring >> Wi_Fi.Value;
 
-			for (int i = 0; i < OtherCounter; i++)
-			{
-				int Index = i + 1;
+		InRecurring >> MobileBill.Date;
+		InRecurring >> MobileBill.Value;
 
-				InRecurring >> Index;
-				getline(InRecurring, Others[i].RName);
-				InRecurring >> Others[i].Date;
-				InRecurring >> Others[i].Value;
-			}
+		InRecurring >> count_5;
+		OtherCounter = count_5;
 
-		}//end while
+		for (int i = 0; i < OtherCounter; i++)
+		{
+			int Index = i + 1;
+
+			InRecurring >> Index;
+			getline(InRecurring, Others[i].RName);
+			getline(InRecurring, Others[i].RName);
+			//InRecurring >> Others[i].RName;
+			InRecurring >> Others[i].Date;
+			InRecurring >> Others[i].Value;
+		}
+
+		//}//end while
 
 		InRecurring.close();
 
 	}//end if file is opened
 
-	else {
+	 //else {
 
-		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+	 //	cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
 
-		exit(1);//the program faild
+	 //	exit(1);//the program faild
 
 
-	}
+	 //}
 
 
 
@@ -2399,3 +2413,4 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 
 
 }//end read data function
+
