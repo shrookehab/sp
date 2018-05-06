@@ -124,15 +124,15 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 	OutSource.open("Source Info .txt");
 
 	OutSource << "Sources\n";
-	OutSource << '1' << "\n";
+	OutSource << '2' << "\n";
 
 	for (int i = 0; i < NumSource; i++)
 	{
 		if (SoIn[i].tybe == 1)
-			OutSource << i + 1 << "\n" << SoIn[i].SName << "\n" << SoIn[i].Date << "\n" << SoIn[i].month << "\n" << SoIn[i].Value << endl;
+			OutSource << i + 1 << "\n" << SoIn[i].tybe << "\n"<< SoIn[i].SName << "\n" << SoIn[i].Date << "\n" << SoIn[i].month << "\n" << SoIn[i].Value << endl;
 
 		else if (SoIn[i].tybe == 2)
-			OutSource << i + 1 << "\n" << SoIn[i].SName << "\n" << SoIn[i].Date << "\n" << SoIn[i].Value << endl;
+			OutSource << i + 1 << "\n" << SoIn[i].tybe << "\n" << SoIn[i].SName << "\n" << SoIn[i].Date << "\n" << SoIn[i].Value << endl;
 
 	}
 
@@ -143,7 +143,7 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 	OutExp.open("Instant Expense Info.txt");
 	
 	OutExp << "InstantExpenses\n";
-	OutExp << '2' << "\n";
+	OutExp << '1' << "\n";
 
 	for (int i = 0; i < NumExpense; i++)
 	{
@@ -161,17 +161,17 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 	OutRecc.open("Reccurring Expenses Info.txt");
 	
 	OutRecc << "RecrringExpenses\n";
-	OutRecc << '3' << "\n";
+	OutRecc << '9' << "\n";
 	
 	for (int i = 0; i < FoodCounter; i++)
 	{
-		OutRecc << i + 1 << "\n" << Food[i].Date << "\n" << Food[i].Value << endl << endl;
+		OutRecc << i + 1 << "\n" << Food[i].Date << "\n" << Food[i].Value << endl;
 	}
 	
 	
 	for (int i = 0; i < FuelCounter; i++)
 	{
-		OutRecc << i + 1 << "\n" << CarFuel[i].Date << "\n" << CarFuel[i].Value << endl << endl;
+		OutRecc << i + 1 << "\n" << CarFuel[i].Date << "\n" << CarFuel[i].Value << endl;
 	}
 
 	OutRecc << ElecBill.Date << "\n" << ElecBill.Value << endl;
@@ -190,7 +190,7 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 
 	for (int i = 0; i < OtherCounter; i++)
 	{
-		OutRecc <<  i + 1 << "\n" << Others[i].RName << "\n"  << Others[i].Date << "\n" << Others[i].Value << endl << endl;
+		OutRecc <<  i + 1 << "\n" << Others[i].RName << "\n"  << Others[i].Date << "\n" << Others[i].Value << endl;
 	}
 
 
@@ -198,3 +198,194 @@ void InFile(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense
 
 
 }//end save data in files
+
+
+
+void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int NumSource, int NumExpense, double UserSources, double TotalExpenses, double TotalRecurring, int FoodCounter, int FuelCounter,int OtherCounter, RecurringInfo Others[], RecurringInfo Food[], RecurringInfo HomeRent, RecurringInfo CarFuel[], RecurringInfo ElecBill, RecurringInfo WaterBill, RecurringInfo GasBill, RecurringInfo Wi_Fi, RecurringInfo MobileBill)
+{
+	ifstream InSource, InExpense, InRecurring;
+
+	string SourceData, ExpenseData, RecData; // the data will save in
+	
+											 
+   //read the saved data of Recurring & instantinous sources from te saved file
+
+	string Title_1;
+	int count_1;
+
+
+	InSource.open("Source Info .txt", ios::binary);
+
+	InSource >> Title_1;
+	InSource >> count_1;
+
+	if (InSource.is_open()) { //if the file is openend it return true else return false
+
+		while (!InSource.eof()) {
+
+			getline(InSource, SourceData);//get the data line by line saved in the string saved data
+
+			for (int i = 0; i < NumSource; i++)
+			{
+				if (SoIn[i].tybe == 1) {
+					InSource >> i + 1;
+					InSource >> SoIn[i].tybe;
+					InSource >> SoIn[i].SName;
+					InSource >> SoIn[i].Date;
+					InSource >> SoIn[i].month;
+					InSource >> SoIn[i].Value;
+				} //end else if
+
+				else if (SoIn[i].tybe == 2) {
+					InSource >> i + 1;
+					InSource >> SoIn[i].tybe;
+					InSource >> SoIn[i].SName;
+					InSource >> SoIn[i].Date;
+					InSource >> SoIn[i].Value ;
+
+
+				}//end else if
+
+			}//end for
+
+		}//end while
+
+		InSource.close();
+	}//end if file is opened
+
+	else {
+
+		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+
+		exit(1);//the program faild
+
+
+	}
+
+
+	//read the saved data of instantinous expenses from te saved file
+
+	string Title_2;
+	int count_2;
+
+
+	InExpense.open("Instant Expense Info .txt", ios::binary);
+
+	InExpense >> Title_2;
+	InExpense >> count_2;
+
+	if (InExpense.is_open()) { //if the file is openend it return true else return false
+
+		while (!InExpense.eof()) {
+
+			getline(InExpense, ExpenseData);//get the data line by line saved in the string saved data
+
+			for (int i = 0; i < NumExpense; i++)
+			{
+
+				InExpense >> i + 1;
+				InExpense >> ExIn[i].EName;
+				InExpense >> ExIn[i].Date;
+				InExpense >> ExIn[i].month;
+				InExpense >> ExIn[i].Value;
+
+
+			}//end for
+
+			}//end while
+	
+		InExpense.close();
+
+		}//end if file is opened
+
+	else {
+
+		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+
+		exit(1);//the program faild
+
+
+	}
+
+
+	//read the saved data of Recurring expenses from te saved file
+
+	string Title_3;
+	int count_3;
+
+
+	InRecurring.open("Reccurring Expenses Info .txt", ios::binary);
+
+	InRecurring >> Title_3;
+	InRecurring >> count_3;
+
+	if (InRecurring.is_open()) { //if the file is openend it return true else return false
+
+		while (!InRecurring.eof()) {
+
+			getline(InRecurring, RecData);//get the data line by line saved in the string saved data
+
+			for (int i = 0; i < FoodCounter; i++)
+			{
+				InRecurring >> i + 1;
+				InRecurring >> Food[i].Date;
+				InRecurring >> Food[i].Value;
+			}
+
+
+			for (int i = 0; i < FuelCounter; i++)
+			{
+				InRecurring >> i + 1;
+				InRecurring >> CarFuel[i].Date; 
+				InRecurring >> CarFuel[i].Value;
+			}
+
+			InRecurring >> ElecBill.Date;
+			InRecurring >> ElecBill.Value ;
+
+
+			InRecurring >> HomeRent.Date;
+			InRecurring >> HomeRent.Value;
+
+
+			InRecurring >> WaterBill.Date;
+			InRecurring >> WaterBill.Value;
+
+			InRecurring >> GasBill.Date;
+			InRecurring >> GasBill.Value ;
+
+			InRecurring >> Wi_Fi.Date;
+			InRecurring >> Wi_Fi.Value;
+
+			InRecurring >> MobileBill.Date;
+			InRecurring >> MobileBill.Value;
+
+			for (int i = 0; i < OtherCounter; i++)
+			{
+				InRecurring >> i + 1;
+				InRecurring >> Others[i].RName;
+				InRecurring >> Others[i].Date;
+				InRecurring >> Others[i].Value;
+			}
+
+		}//end while
+
+		InRecurring.close();
+
+	}//end if file is opened
+
+	else {
+
+		cerr << "!!!ERROR opening the file :(.. \n\n\tPlease check if it is exist.... \n";
+
+		exit(1);//the program faild
+
+
+	}
+
+
+
+
+
+
+}//end read data function
