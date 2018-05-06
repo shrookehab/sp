@@ -2209,16 +2209,17 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 
 
 	InSource.open("Source Info.txt");
-
-	InSource >> Title_1;
-	InSource >> count_1;
-
 	if (InSource.is_open()) { //if the file is openend it return true else return false
 
 		while (!InSource.eof()) {
 
 
-			for (int i = 0; i < count_1; i++)
+			InSource >> Title_1;
+			InSource >> count_1;
+
+			NumSource = count_1;
+
+			for (int i = 0; i < NumSource; i++)
 			{
 				int Index = i + 1;
 
@@ -2266,15 +2267,16 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 
 	InExpense.open("Instant Expense Info.txt");
 
-	InExpense >> Title_2;
-	InExpense >> count_2;
-
 	if (InExpense.is_open()) { //if the file is openend it return true else return false
 
 		while (!InExpense.eof()) {
 
+			InExpense >> Title_2;
+			InExpense >> count_2;
 
-			for (int i = 0; i < count_2; i++)
+			NumExpense = count_2;
+
+			for (int i = 0; i < NumExpense; i++)
 			{
 				int Index = i + 1;
 
@@ -2312,15 +2314,17 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 
 	InRecurring.open("Reccurring Expenses Info.txt");
 
-	InRecurring >> Title_3;
-	InRecurring >> count_3;
 
 	if (InRecurring.is_open()) { //if the file is openend it return true else return false
 
 		while (!InRecurring.eof()) {
 
+			InRecurring >> Title_3;
+			InRecurring >> count_3;
 
-			for (int i = 0; i < count_3; i++)
+			FoodCounter = count_3;
+
+			for (int i = 0; i < FoodCounter; i++)
 			{
 				int Index = i + 1;
 
@@ -2330,8 +2334,9 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 			}
 
 			InRecurring >> count_4;
+			FuelCounter = count_4;
 
-			for (int i = 0; i < count_4; i++)
+			for (int i = 0; i < FuelCounter; i++)
 			{
 				int Index = i + 1;
 
@@ -2361,8 +2366,9 @@ void ReadData(SourceInfo SoIn[], ExpenseInfo ExIn[], int& NumSource, int& NumExp
 			InRecurring >> MobileBill.Value;
 
 			InRecurring >> count_5;
+			OtherCounter = count_5;
 
-			for (int i = 0; i < count_5; i++)
+			for (int i = 0; i < OtherCounter; i++)
 			{
 				int Index = i + 1;
 
